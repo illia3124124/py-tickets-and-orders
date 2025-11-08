@@ -48,10 +48,8 @@ def get_taken_seats(
         movie_session_id: int
 ) -> list[dict]:
     movie_session = get_movie_session_by_id(movie_session_id)
-    movie_session_tickets = Ticket.objects.filter(
-        movie_session=movie_session.id
-    )
+
     return [
-        {"row": ticket.row, "seat": ticket.seat}
-        for ticket in movie_session_tickets
+        {"row": row, "seat": seat}
+        for row, seat in movie_session.tickets.values_list("row", "seat")
     ]
